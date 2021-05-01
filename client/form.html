@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <div id="app">
+    	<v-app>
+    		<v-content>
+    			<v-toolbar color="#5CDB95" flat>
+    				<v-toolbar-title><v-btn href="main.html" color="#05386B" flat large>TutorialKnight</v-btn></v-toolbar-title>
+    				<v-spacer></v-spacer>
+    				<v-toolbar-items>
+    					<v-btn flat href="display.html" color="#05386B" small>Tutorial</v-btn>
+    					<v-btn flat href="form.html" color="#05386B" small>Create</v-btn>
+                        <v-btn flat small color="#05386B">Log Out</v-btn>
+    				</v-toolbar-items>
+    			</v-toolbar>
+
+                <!-- Tutorial Posting -->
+                <v-container fluid flat>
+                    <v-layout flat>
+                        
+                        <v-flex xs12>
+                            <v-card color="#5CDB95" flat>
+                                <v-card-title class="display-1 justify-center" >Create Tutorial</v-card-title>
+                                <v-card-text>
+                                    <v-text-field
+                                        label="Title"
+                                        v-model="new_title"
+                                        outline
+                                        color="grey">
+                                    </v-text-field>
+                                    <!-- <v-btn>post</v-btn> -->
+                                </v-card-text>
+
+                                <!-- Intro Info -->
+                                <v-hover>
+                                    <v-card
+                                        slot-scope="{ hover }"
+                                        :class="`elevation-${hover ? 0 : 0}`"
+                                        class="mx-auto"
+                                        color="#5CDB95"
+                                        flat
+                                        >
+                                        <v-layout column pa-3>
+                                            Intro
+                                            <v-layout>
+                                                <v-card-text>
+                                                    
+                                                </v-card-text>
+                                            </v-layout>
+
+                                             <v-layout>
+                                                <v-flex xs6 pa-3>
+                                                    <div class="txtBackground">
+                                                        <v-textarea
+                                                            outline
+                                                            label="text"
+                                                            v-model="intro_text"
+                                                            
+                                                            background-color="white"
+                                                            >
+                                                        </v-textarea>
+                                                    </div>
+                                                </v-flex>
+                                                <v-flex xs6 pa-3>
+                                                    <img :src="intro_img" height="150" v-if="intro_img"/>
+                                                    <v-text-field label="Select Image" @click='pickFile("intro_image")' prepend-icon='attach_file'></v-text-field>
+                                                    <input
+                                                        type="file"
+                                                        style="display: none"
+                                                        ref="intro_image"
+                                                        accept="image/*"
+                                                        @change="onFilePicked"
+                                                    >
+                                                </v-flex>
+                                            </v-layout>
+                                        </v-layout>
+                                    </v-card>
+                                </v-hover>
+                                <!--Create Step code -->
+                                <v-hover>
+                                    <v-card
+                                        slot-scope="{ hover }"
+                                        :class="`elevation-${hover ? 0 : 0}`"
+                                        class="mx-auto"
+                                        color="#5CDB95"
+                                        flat
+                                        >
+                                        <v-layout column pa-3 v-for="(step, index) in steps_container">
+                                            Create Steps
+                                             <v-layout>
+                                                <v-flex xs6 pa-3>
+                                                    <v-textarea
+                                                        outline
+                                                        label="text"
+                                                        v-model="steps_container[index].step_text"
+                                                        color="grey">
+                                                    </v-textarea>
+                                                </v-flex>
+                                                <v-flex xs6 pa-3>
+                                                    <v-text-field label="Ref Link" v-model="steps_container[index].step_ref">
+                                                    </v-text-field>
+                                                    <!-- <v-text-field label="Add Image" v-model="steps_container[index].step_img">
+                                                    </v-text-field> -->
+                                                    <img :src="steps_container[index].step_img" height="150" v-if="steps_container[index].step_img"/>
+                                                    <v-text-field label="Select Image" @click='pickFile(imageStep(index))' prepend-icon='attach_file'></v-text-field>
+                                                    <input
+                                                        type="file"
+                                                        style="display: none"
+                                                        v-bind:ref="imageStep(index)"
+                                                        accept="image/*"
+                                                        @change="onFilePicked"
+                                                    >
+                                                </v-flex>
+                                            </v-layout>
+                                        </v-layout>
+                                        
+                                        <div class="blue-grey lighten-5">
+                                            <template>
+                                              <v-layout row right>
+                                                <v-dialog v-model="dialog" persistent max-width="290">
+                                                  <template v-slot:activator="{ on }">
+                                                    <v-btn color="#379683" dark v-on="on">Remove Step</v-btn>
+                                                  </template>
+                                                  <v-card>
+                                                    <v-card-title class="headline">Confirmation</v-card-title>
+                                                    <v-card-text>Are you sure you want to remove this step?</v-card-text>
+                                                    <v-card-actions>
+                                                      <v-spacer></v-spacer>
+                                                      <v-btn color="#379683" flat @click="dialog = false">No</v-btn>
+                                                      <v-btn @click="decreaseStep()" color="#379683" flat @click="dialog = false">Yes</v-btn>
+                                                    </v-card-actions>
+                                                  </v-card>
+                                                </v-dialog>
+                                              </v-layout>
+                                            </template>
+                                        </div>
+                                        <div color="#587307">
+                                            <v-btn
+                                                color="#379683"
+                                                @click="incrementStep()"
+                                                class="ml-2"
+                                                dark
+                                                >Add Step
+                                            </v-btn>
+                                        </div>
+                                    </v-card>
+                                </v-hover>
+
+
+                                <!--Outro Info -->
+                                <v-hover>
+                                    <v-card
+                                        slot-scope="{ hover }"
+                                        :class="`elevation-${hover ? 0 : 0}`"
+                                        class="mx-auto"
+                                        color="#5CDB95"
+                                        flat
+                                        >
+                                        <v-layout column pa-3>
+                                            Outro
+                                            <v-layout>
+                                                <v-card-text>
+                                                    
+                                                    <!-- <v-btn>post</v-btn> -->
+                                                </v-card-text>
+                                            </v-layout>
+
+                                             <v-layout>
+                                                <v-flex xs6 pa-3>
+                                                    <v-textarea
+                                                        outline
+                                                        label="text"
+                                                        v-model="outro_text"
+                                                        color="grey">
+                                                    </v-textarea>
+                                                </v-flex>
+                                                <v-flex xs6 pa-3>
+                                                    <!-- <v-text-field label="Add Image" v-model="outro_img">
+                                                    </v-text-field> -->
+                                                    <img :src="outro_img" height="150" v-if="outro_img"/>
+                                                    <v-text-field label="Select Image" @click='pickFile("outro_image")' prepend-icon='attach_file'></v-text-field>
+                                                    <input
+                                                        type="file"
+                                                        style="display: none"
+                                                        ref="outro_image"
+                                                        accept="image/*"
+                                                        @change="onFilePicked"
+                                                    >
+                                                </v-flex>
+                                                <!-- this is the original button that was on the side of the REF and IMG <v-layout right><v-btn><v-icon>add_box</v-icon></v-btn></v-layout> -->
+                                            </v-layout>
+
+                                            <!-- Confirmation to post tutorial -->
+                                            <div color="#B2F3FF">
+                                                <template>
+                                                  <v-layout row justify-center>
+                                            
+                                                        <v-btn color="#379683" dark @click="Post_tutorial()">Post Tutorial</v-btn>
+                                                      
+                                                  </v-layout>
+                                                </template>
+                                            </div>
+
+                                        </v-layout>
+                                    </v-card>
+                                </v-hover>
+                            </v-card>
+                        </v-flex>
+                        
+                    </v-layout>
+                </v-container>
+
+            </v-content>
+        </v-app>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+    <script src="code.js"></script>
+</html>

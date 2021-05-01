@@ -1,0 +1,85 @@
+[v-cloak] {
+	display: none;
+}
+/*background-color: #78909C; original background color*/
+#app {
+	background-color: #67FDCF;
+}
+
+nav {
+	background-color: #1F2605;
+}
+
+.backImage {
+  display: inline-block;
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+}
+
+#outline {
+	border: solid;
+	border-color: #B2F3FF;
+	border-width: 2px;
+	border-radius: 10px;
+}
+
+.outline {
+	border: solid;
+	border-color: #B2F3FF;
+	border-width: 50px;
+	border-radius: 10px;
+}
+
+.contentColor {
+	background-color: #5CDB95;
+}
+/* Dark blue background color */
+.back {
+	background-color: #05386B;	
+}
+
+/*Murky Green */
+.difColor {
+	background-color: #06386A;
+}
+
+
+.txtBackground {
+	 background-color: rba(100, 100, 100, 0.3);
+}
+
+/* makes it so our get started button hovers over certain objects */
+.btnHeight {
+	z-index: 5;
+	bottom: 0;
+	right: 0;
+	position: fixed;
+}
+
+.btnHome {
+	width:80%;
+}
+/* This is for the text fading in when the webpage is loaded. */
+#fade p {
+    margin-top: 25px;
+    font-size: 21px;
+    text-align: center;
+
+    -webkit-animation: fadein 2s;
+            animation: fadein 2s;
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.v-parallax__content {
+	padding: 0px
+}

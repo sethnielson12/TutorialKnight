@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet"> -->
+        <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab|Material+Icons&display=swap" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <div id="app">
+    	<v-app>
+        <v-content>
+          <v-toolbar flat color="#5CDB95">
+            <v-toolbar-side-icon @click="tutNav = !tutNav" color="#5CDB95"></v-toolbar-side-icon>
+    				<v-toolbar color="#5CDB95" flat>
+              <v-toolbar-title><v-btn href="main.html" color="#05386B" flat large>TutorialKnight</v-btn></v-toolbar-title>
+              <v-spacer></v-spacer>
+              <v-toolbar-items>
+                <v-btn flat href="display.html" color="#05386B" small>Tutorial</v-btn>
+                <v-btn flat href="form.html" color="#05386B" small>Create</v-btn>
+                <v-btn flat small color="#05386B">Log Out</v-btn>
+              </v-toolbar-items>
+            </v-toolbar>
+    			</v-toolbar>
+          <v-navigation-drawer app v-model="tutNav">
+            <v-list>
+              <v-list-tile
+                      v-for="tut in entire_user.user_tut_list"
+                      @click="selectTut(tut)">
+                      <v-list-content>
+                          <v-list-tile-title>
+                              {{tut.title}}
+                          </v-list-tile-title>
+                      </v-list-content>
+                  </v-list-tile>
+              </v-list>
+          </v-navigation-drawer>
+
+                <!-- Display Tutorial -->
+                <v-container fluid>
+                    <v-layout>
+
+
+
+                      <!-- Main Card -->
+                      <v-flex v-if="!dispayTutFilled" xs12 ml-1>
+                            <div class="center pa-4 display-1" >
+                              Please select a tutorial
+                            </div>
+                            <div
+                                v-for="(tut, index) in entire_user.user_tut_list"
+                                @click="selectTut(tut)"
+                                >
+                                <v-card color="#5cdb95" flat class="center title pt-1 pb-3">
+                                  <v-btn flat>
+                                    {{tut.title}}
+                                  </v-btn>
+                                </v-card>
+                                <v-divider v-if="index + 1 < entire_user.user_tut_list.length"></v-divider>
+                            </div>
+                      </v-flex>
+
+
+                      <v-flex v-if="dispayTutFilled" xs12 ml-1>
+
+
+                            <v-card flat color="#5cdb95" >
+                                <v-container xs12>
+          
+                                    <v-btn
+                                      v-if="dispayTutFilled"
+                                      fab
+                                      top
+                                      right
+                                      small
+                                      flat
+                                      @click="editMode=!editMode"
+                                    >
+                                      <v-icon>edit</v-icon>
+                                    </v-btn>
+                      
+                                </v-container>
+                              <!-- Title -->
+                              <v-card-title
+                                  v-if="!editMode"
+                                  class="display-1 justify-center"
+                                  >
+                                  {{display_tut.title}}
+                              </v-card-title>
+                              <v-text-field
+                                  v-if="editMode"
+                                  label="Title"
+                                  v-model="display_tut.title"
+                                  outline
+                                  color="grey">
+                              </v-text-field>
+                              <!-- End of Title -->
+
+
+                                <!-- Intro Info -->
+                                <v-card color="#5cdb95" flat ml-4>
+
+                                  <div class="pl-4  pt-4 headline">
+                                    Starting Point <span class="subheading">(Everything necessary for this tutorial)</span>
+                                  </div>
+                                    <v-layout row wrap pa-3  pl-4>
+                                            <v-flex xs12 md6 pa-3>
+                                              <!-- Start of Intro Text -->
+                                              <div
+                                              v-if="!editMode"
+                                              font-family="Roboto+Slab"
+                                              class="subheading"
+                                              >
+                                                {{display_tut.intro_text}}
+                                              </div>
+                                              <v-textarea
+                                                  v-if="editMode"
+                                                  outline
+                                                  label="text"
+                                                  v-model="display_tut.intro_text"
+                                                  background-color="white"
+                                                  >
+                                              </v-textarea>
+                                              <!-- End of Intro Text -->
+                                            </v-flex>
+
+                                            <v-flex xs12 md6 pa-3>
+                                              <!-- Start of Intro Image -->
+                                              <v-img
+                                                  v-if = "!editMode"
+                                                  v-bind:src="display_tut.intro_img"
+                                                  max-height="500"
+                                                  position='center center'
+                                                  contain>
+                                              </v-img>
+                                              <img :src="display_tut.intro_img" height="150" v-if="editMode"/>
+                                              <v-text-field v-if="editMode" label="Change Image" 
+                                              @click='pickFile("intro_image_D")' 
+                                              prepend-icon='attach_file'></v-text-field>
+                                              <input
+                                                  type="file"
+                                                  style="display: none"
+                                                  ref="intro_image_D"
+                                                  accept="image/*"
+                                                  @change="onFilePicked"
+                                              >
+                                              <!-- <v-text-field
+                                                  v-if="editMode"
+                                                  label="Image Link"
+                                                  v-model="display_tut.intro_img">
+                                                  
+                                              </v-text-field> -->
+                                              <!-- End of Intro Image  -->
+                                            </v-flex>
+                                            <v-container>
+                                              <v-divider></v-divider>
+                                            </v-container>
+
+                                    </v-layout>
+                                </v-card>
+
+                                <!--Create Step code -->
+                                <v-card flat color="#5cdb95" >
+                                    <v-layout row wrap pa-3  pl-4 v-for="(step, index) in steps_container">
+                                        <v-container class="xs12  amber--text text--darken-4 ml-0 pt-1 headline">
+                                          Step {{index+1}}
+                                        </v-container>
+
+                                            <v-flex xs12 md6 px-3>
+                                              <!-- Start of single step text -->
+                                                <v-card-text
+                                                  v-if="!editMode"
+                                                  class="subheading"
+                                                  >
+                                                  {{steps_container[index].step_text}}
+                                                </v-card-text>
+                                                <v-textarea
+                                                    v-if="editMode"
+                                                    outline
+                                                    label="text"
+                                                    v-model="steps_container[index].step_text"
+                                                    color="grey">
+                                                </v-textarea>
+                                              <!-- end of single step text -->
+
+                                              <!-- Start of single step ref -->
+                                                <a v-if="!editMode" class="pl-4 subheading" :href="steps_container[index].step_ref">
+                                                  {{steps_container[index].step_ref}}
+                                                </a>
+                                                <v-text-field v-if="editMode" label="Ref Link" v-model="steps_container[index].step_ref">
+                                                </v-text-field>
+                                              <!-- End of single step ref -->
+                                                <!--  -->
+                                                <!-- myFunction: function () {
+                                                    window.open("https://google.com", "_blank");
+                                                } -->
+                                                <!--  -->
+                                            </v-flex>
+                                            <v-flex xs12 md6 pa-3>
+                                              <!-- Start of single step image -->
+                                              <v-img
+                                                  v-bind:src="steps_container[index].step_img"
+                                                  v-if = "!editMode"
+                                                  max-height="500"
+                                                  position='center center'
+                                                  contain
+                                                  mb-4>
+                                              </v-img>
+                                              <!-- <v-text-field v-if="editMode" label="Image Link" v-model="steps_container[index].step_img">
+                                              </v-text-field> -->
+                                              <img :src="steps_container[index].step_img" height="150" v-if="editMode"/>
+                                              <v-text-field label="Select Image" 
+                                              @click='pickFile(imageStep(index))' 
+                                              prepend-icon='attach_file'
+                                              v-if="editMode"></v-text-field>
+                                              <input
+                                                  type="file"
+                                                  style="display: none"
+                                                  v-bind:ref="imageStep(index)"
+                                                  accept="image/*"
+                                                  @change="onFilePicked"
+                                              >
+
+
+                                              <!-- End of single step image -->
+                                            </v-flex>
+                                        <v-container class="xs12">
+                                          <v-divider></v-divider>
+                                        </v-container>
+                                    </v-layout>
+
+
+                                </v-card>
+
+
+                                <!--Outro Info -->
+                                <v-card color="#5cdb95" flat>
+                                  <div class=" pl-4 pt-4 headline">
+                                    End Result <span class="subheading">(Summary of progress from Start)</span>
+                                  </div>
+                                    <v-layout row wrap pa-3 pl-4>
+                                            <v-flex xs12 md6 pa-3>
+                                              <!-- Start of outro text -->
+                                              <v-card-text
+                                                  v-if="!editMode"
+                                                  class="subheading"
+                                                  >
+                                                {{display_tut.outro_text}}
+                                              </v-card-text>
+                                              <v-textarea
+                                              v-if="editMode"
+                                                  outline
+                                                  label="text"
+                                                  v-model="display_tut.outro_text"
+                                                  color="grey">
+                                              </v-textarea>
+                                              <!-- End of Outro Text -->
+                                            </v-flex>
+                                            <v-flex xs12 md6 pa-3>
+                                              <!-- Start of outro_img -->
+                                              <v-img
+                                                  v-bind:src="display_tut.outro_img"
+                                                  v-if = "!editMode"
+                                                  max-height="500"
+                                                  position='center center'
+                                                  contain>
+                                              </v-img>
+                                              <!-- <v-text-field v-if="editMode" label="Image Link" v-model="display_tut.outro_img">
+                                              </v-text-field> -->
+                                              <img :src="display_tut.outro_img" height="150" v-if="editMode"/>
+                                              <v-text-field label="Only click if you want to change Image" 
+                                              @click='pickFile("outro_image_D")' 
+                                              prepend-icon='attach_file'
+                                              v-if="editMode"></v-text-field>
+                                              <input
+                                                  type="file"
+                                                  style="display: none"
+                                                  ref="outro_image_D"
+                                                  accept="image/*"
+                                                  @change="onFilePicked"
+                                              >
+                                              <!-- End of outro_img -->
+                                            </v-flex>
+                                            <!-- this is the original button that was on the side of the REF and IMG <v-layout right><v-btn><v-icon>add_box</v-icon></v-btn></v-layout> -->
+
+                                            <template>
+                                              <v-layout row justify-center>
+
+                                                    <v-btn v-if="editMode" color="#379683" dark @click=Edit_tutorial(display_tut)>Save Changes</v-btn>
+
+                                              </v-layout>
+                                            </template>
+
+                                    </v-layout>
+                                </v-card>
+
+                            </v-card>
+                        </v-flex>
+
+                        <!-- End of Main Card -->
+                        <!-- <v-flex xs1 md1></v-flex> -->
+                    </v-layout>
+                    <v-card-text style="height: 0px; position: relative">
+                      <v-btn
+                        v-if="dispayTutFilled && editMode"
+                        absolute
+                        fab
+                        top
+                        right
+                        small
+                        flat
+                        @click="Delete_tutorial(display_tut)"
+                      >
+                        <v-icon>delete</v-icon>
+                      </v-btn>
+                    </v-card-text>
+                </v-container>
+
+            </v-content>
+        </v-app>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+    <script src="code.js"></script>
+</html>

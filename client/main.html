@@ -1,0 +1,312 @@
+<!-- Blake made it here -->
+<!-- Jorge here, we made it bois -->
+<!-- Seth Successful -->
+<!-- B2F3FF blue and E6FFB2 yellow -->
+
+<!DOCTYPE html>
+<html>
+    <head>
+    	<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <div id="app" v-cloak>
+    	<v-app>
+    		<v-content>
+				<!-- #05386B BLUE -->
+				<v-toolbar color="#67FDCF" flat v-if="page == 'signUp'">
+	    				<v-toolbar-title>
+	    					<v-btn color="#05386B" flat large v-on:click="page='main'">TutorialKnight</v-btn>
+	    				</v-toolbar-title>
+	                        
+	    		</v-toolbar>
+    			<v-parallax
+
+    				height=1000
+    				src="mainpara.jpg"
+					v-if="page=='main'"
+					>
+					<!--v-if="!isLoggedin"  -->
+	    			<v-toolbar color="#7DFEA4" flat v-if="!isLoggedin">
+	    				<v-toolbar-title>
+	    					<v-btn color="#05386B" flat large v-on:click="page='main'">TutorialKnight</v-btn>
+	    				</v-toolbar-title>
+	    				<v-spacer></v-spacer>
+	    				<v-toolbar-items>
+	    					<v-btn color="#05386B" flat small v-on:click="page='signUp'">Log In</v-btn>
+	                        
+	    				</v-toolbar-items>
+	    			</v-toolbar>
+	    			<v-toolbar color="#7DFEA4" flat v-if="isLoggedin">
+	    				<v-toolbar-title>
+	    					<v-btn color="#05386B" flat large v-on:click="page='main'">TutorialKnight</v-btn>
+	    				</v-toolbar-title>
+	    				<v-spacer></v-spacer>
+	    				<v-toolbar-items>
+	    					<v-btn color="#05386B" flat small href="display.html">Tutorial</v-btn>
+	    					<v-btn color="#05386B" flat href="form.html" small>Create</v-btn>
+	    					<v-btn flat small color="#05386B" @click="LogOut()">Log Out</v-btn>
+	    				</v-toolbar-items>
+					</v-toolbar>
+				
+	    			<v-container v-if="page=='main'" grid-list-lg fluid pa-5>
+						 <v-layout>
+						 	<v-flex xs6 pa-3>
+								<v-card-title>
+									<v-img src="tknightB.png" height="360" contain>
+								</v-card-title>
+								<div id="fade">
+									<p class="display-1 text-xs-center" style="color: #05386B">
+										Tutorial Knight
+									</p>
+								</div>
+							</v-flex>
+
+						 	<v-flex xs6 pa-5>
+								<div id="fade">
+									<p class="display-1 text-xs-left pa-1 ma-1" style="color: #05386B">Convenience Starts Here</p>
+								</div>
+								<div id="fade" class="pa-1">
+									<p class="subheading text-xs-left" style="color: #05386B">Make your handmade tutorials and access them easily</p>
+								</div>
+								<div class="btnHome mt-4">
+									<v-btn style="color: #5CDB95" color="#05386B" large block @click="page = 'signUp'">Get Started</v-btn>
+								</div>
+								<!--<div class="item" data-aos="fade-left">YOOOO</div> -->
+						 	</v-flex>
+						 	
+						</v-layout>
+						
+					</v-parallax>
+					<div data-aos="zoom-in-up">
+						<v-card height=500 color="#67FDCF" flat v-if="page=='main'">
+							<p class="display-4 text-xs-center" style="color: #05386B">Let's Explore</p>
+						</v-card>
+					</div>
+				</v-container>
+				<div data-aos="fade-up"
+				     data-aos-anchor-placement="center-bottom"
+				     class="btnHeight"
+				     
+				     >
+				     <v-btn floating fixed bottom right round color="#1F2605" dark v-if="page=='main'" href="form.html">Get Started</v-btn>
+				</div>
+				<!-- Split lower half of main page -->
+				<v-container v-if="page=='main'" grid-list-lg fluid class="back">
+					<v-layout>
+						<v-flex xs3>
+							<v-parallax height=100>
+								<v-card flat color="#05386B">
+									<div data-aos="fade-right">
+										<v-card-text class="display-1 font-weight" style="color: #EDF5E1">
+											It's Simple!
+										</v-card-text>
+									</div>
+								</v-card>
+							</v-parallax>
+							<v-parallax height=400>
+								<div data-aos="fade-right">
+									<v-card-text class="display-1 font-weight" style="color: #EDF5E1">
+										Just a few clicks to bring convenience into life.	
+									</v-card-text>
+								</div>
+							</v-parallax>
+						</v-flex>
+						<v-flex xs6>
+							<img class="backImage" src="vue2tut.png" contain>
+						</v-flex>
+						<v-flex xs3></v-flex>
+						
+					</v-layout>
+				</v-container>
+
+				<!-- Second split, mirroring the one above -->
+				<v-container v-if="page=='main'" grid-list-lg fluid pa-5 class="back">
+					<v-layout>
+						<v-flex xs3>
+							
+						</v-flex>
+						<v-flex xs6 color="blue">
+							<img class="backImage" src="disP.png" contain>
+						</v-flex>
+						<v-flex xs3>
+							<v-parallax height= 100>
+								<v-card flat color="#05386B">
+									<div data-aos="fade-left">
+										<v-card-text class="display-1 font-weight" style="color: #EDF5E1">
+											Once Posted
+										</v-card-text>
+									</div>
+								</v-card>
+							</v-parallax>
+							<v-parallax height=400>
+							<div data-aos="fade-left">
+								<v-card-text class="display-1 font-weight" style="color: #EDF5E1">
+									You can access your tutorials any where you go!	
+								</v-card-text>
+							</div>
+						</v-parallax>
+						</v-flex>
+					</v-layout>
+				</v-container>
+
+				<!-- 3 section split, 3 easy steps, sign up log in start creating -->
+				<!--<v-card-text class="display-2 text-xs-center pa-5">Three easy steps to get started</v-card-text>-->
+				<v-container v-if="page=='main'" grid-list-lg fluid class="difColor">
+						<v-card-text class="display-2 text-xs-center" style="color: #EDF5E1">Three easy steps to get started</v-card-text>
+						<v-layout>
+							<v-flex xs4 pa-5>
+								<div data-aos="fade-up"
+								     data-aos-duration="1000">
+									<v-card color="#379683" class="outline" dark>
+										<p class="display-1 font-weight text-xs-center" style="color: #EDF5E1">Sign Up</p>
+					          			<div class="body-2 text-xs-center pa-1" style="color: #EDF5E1">Get started in just a minute</div>
+					          			<div class="body-2 text-xs-center pa-2" style="color: #EDF5E1">Sign up and get started today</div>
+									</v-card>
+								</div>
+							</v-flex>
+
+							<v-flex xs4 pa-5>
+								<div data-aos="fade-up"
+								     data-aos-duration="1000">
+									<v-card color="#379683" class="outline" dark>
+										<p class="display-1 font-weight text-xs-center" style="color: #EDF5E1">Log In</p>
+					          			<div class="body-2 text-xs-center pa-1" style="color: #EDF5E1">Accessing your account is easy</div>
+					          			<div class="body-2 text-xs-center pa-2" style="color: #EDF5E1">Log in to view your tutorials</div>
+									</v-card>
+								</div>
+							</v-flex>
+
+							<v-flex xs4 pa-5>
+								<div data-aos="fade-up"
+								     data-aos-duration="1000">
+									<v-card color="#379683" class="outline" dark>
+										<p class="display-1 font-weight text-xs-center" style="color: #EDF5E1">Start Creating</p>
+					          			<div class="body-2 text-xs-center pa-1" style="color: #EDF5E1">Creating tutorials is convenient!</div>
+					          			<div class="body-2 text-xs-center pa-2" style="color: #EDF5E1">Cheers to saving time!</div>
+									</v-card>
+								</div>
+							</v-flex>
+						</v-layout>
+				</v-container>
+
+
+				<!-- Sign up page -->
+				<v-container v-if="page =='signUp'" fluid pa-5>
+			        <v-layout align-top justify-center>
+			          <v-flex xs12 sm8 md4>
+			          	<v-card 
+							flat 
+							color="#67FDCF"
+							>
+							<v-card-title>
+								<v-img src="tknightB.png" height="100" contain>
+							</v-card-title>
+							<div id="fade">
+								<p class="display-1 text-xs-center" style="color: #05386B">
+									Tutorial Knight
+								</p>
+							</div>
+						</v-card>
+
+			          	<v-hover>
+
+				            <v-card
+				            	slot-scope="{ hover }"
+				            	:class="`elevation-${hover ? 12 : 2}`"
+				            	class="mx-auto"
+				            	>
+
+				              <v-toolbar dark color="#379683">
+				                <v-tabs fixed-tabs color= "#379683">
+							     	<v-tab
+							     		v-on:click="user_type='sign'"
+							     	>
+							     	Sign Up
+							     	</v-tab>
+							     	<v-tab v-on:click="user_type='log'">
+							     		Log In
+							     	</v-tab>
+							     </v-tabs>
+								<v-spacer></v-spacer>
+								
+				                <v-tooltip bottom>
+				                 
+				                </v-tooltip>
+				              </v-toolbar>
+				              <v-card-text v-if="user_type=='sign'">
+				                <v-form>
+				                  <v-text-field color="#8EE4AF" prepend-icon="person" name="login" label="E-mail" type="text" v-model="register_email"></v-text-field>
+				                  <v-text-field color="#8EE4AF" prepend-icon="lock" name="password" label="Password" id="password" type="password" v-model="register_password"></v-text-field>
+				                </v-form>
+				              </v-card-text>
+
+				              <v-card-text v-if="user_type=='log'">
+				                <v-form>
+				                  <v-text-field color="#8EE4AF" prepend-icon="person" name="login" label="E-mail" type="text" v-model="login_email"></v-text-field>
+				                  <v-text-field color="#8EE4AF" prepend-icon="lock" name="password" label="Password" id="password" type="password" v-model="login_password"></v-text-field>
+				                </v-form>
+				              </v-card-text>
+
+				              <v-card-actions v-if="user_type=='sign'">
+				                <v-spacer></v-spacer>
+				                <v-btn color="#379683" dark @click = "registerUser()">Sign Up</v-btn>
+				              </v-card-actions>
+
+				              
+				              <v-card-actions v-if="user_type=='log'">
+				                <v-spacer></v-spacer>
+				                <v-btn color="#379683" dark @click="loginUser()">Login</v-btn>
+				              </v-card-actions>
+				            </v-card>
+				        </v-hover>
+			          </v-flex>
+			        </v-layout>
+			      </v-container>
+
+				<!-- Footer -->
+				<template v-if="page =='signUp' || page =='logIn' || page =='main'">
+				  <v-footer
+				    dark
+				    height="auto">
+				    <v-card
+				      class="flex"
+				      flat
+				      tile
+				      color="#05386B">
+				      <v-card-title>
+				        <strong class="subheading">Get connected with us on social networks!</strong>
+				        <v-spacer></v-spacer>
+				        <v-btn icon>
+				          <img src="facebook-box.png">
+				        </v-btn>
+				        <v-btn icon>
+				          <img src="twitter-box.png">
+				        </v-btn>
+				        <v-btn icon>
+				          <img src="linkedin-box.png">
+				        </v-btn>
+
+				      </v-card-title>
+
+				      <v-card-actions color="#1F2605" class="justify-center">
+				        &copy;2019 — <strong> Quick Reference</strong>
+				      </v-card-actions>
+				    </v-card>
+				  </v-footer>
+				</template>
+            </v-content>
+        </v-app>
+    </div>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="code.js"></script>
+    <script>
+	  AOS.init();
+	</script>
+</html>
